@@ -1,8 +1,15 @@
 # Automatisation sur Azure
 ## Sommaire
 - [Pré-requis](#pré-requis)
+- [Accès à l'environnement de Développement](#accès-à-lenvironnement-de-développement)
 
 ## Pré-requis
+
+- Une souscription Azure sur laquelle vous avez des droits à minima de contribution
+- Une VM de développement
+
+## Accès à lenvironnement de Développement
+
 
 
 # Tutoriel GitLab ![Work in progress](http://www.repostatus.org/badges/latest/wip.svg)
