@@ -3,9 +3,9 @@
 Objectif : le but de cet exercice est de se familiariser avec Azure et le déploiement de ressources dans Azure avec le portail Azure dans un premier temps puis au travers du déploiement via Az Cli et Azure Resource Manager (ARM).
 
 Tâches : 
- - [Etape 1 : créer une webapp au travers du portail Azure](#etape-1-cr%C3%A9er-une-webapp-via-le-portail-azure)
- - [Etape 2 : ajouter un storage account à votre déploiement via Azure Cli](#etape-2-cr%C3%A9er-un-storage-account-en-utilisant-az-cli)
- - [Etape 3 : ajouter une base de données Azure SQL DB via Azure ARM](#etape-3-cr%C3%A9er-une-base-de-donn%C3%A9es-azure-sql-db-en-utilisant-un-template-arm)
+ - [Etape 1 : créer une webapp au travers du portail Azure](.#etape-1---cr%C3%A9er-une-webapp-via-le-portail-azure)
+ - [Etape 2 : ajouter un storage account à votre déploiement via Azure Cli](.#etape-2---cr%C3%A9er-un-storage-account-en-utilisant-az-cli)
+ - [Etape 3 : ajouter une base de données Azure SQL DB via Azure ARM](.#etape-3---cr%C3%A9er-une-base-de-donn%C3%A9es-azure-sql-db-en-utilisant-un-template-arm)
 
 ## Etape 1 - Créer une WebApp via le portail Azure
 Se connecter au portail Azure : https://portal.azure.com
