@@ -8,11 +8,13 @@ Les étapes de cet exercice :
  - [Etape 2 : ajouter un storage account à votre déploiement via Azure Cli](.#etape-2---cr%C3%A9er-un-storage-account-en-utilisant-az-cli)
  - [Etape 2 : ajouter un storage account à votre déploiement via la cmdlet Powershell ARM](.#etape-3---cr%C3%A9er-un-storage-account-en-utilisant-la-cmdlet-powerhsell-arm)
  - [Etape 4 : ajouter une base de données Azure SQL DB via Azure ARM](.#etape-4---cr%C3%A9er-une-base-de-donn%C3%A9es-azure-sql-db-en-utilisant-un-template-arm)
-
+  
+  
 ## Pré-requis
 
 - Une souscription Azure sur laquelle vous avez des droits à minima de contribution
-
+  
+  
 ## Etape 1 - Créer une WebApp via le portail Azure
 Se connecter au portail Azure : https://portal.azure.com
 Utiliser votre compte personnel disposant d'une souscription Azure
