@@ -256,28 +256,6 @@ Quelques fonctions utilisées dans le template :
                 `"minCapacity": 0.5`  
             `}`  
         `}`  
-        ```
-        {
-            "type": "microsoft.sql/servers/databases",
-            "apiVersion": "2019-06-01-preview",
-            "name": "[concat(variables('dbserver_name'), '/', variables('db_name'))]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": ["[variables('dbserver_name')]"],
-            "tags": "[variables('tags')]",
-            "sku": {
-                "name": "GP_S_Gen5",
-                "tier": "GeneralPurpose",
-                "family": "Gen5",
-                "capacity": 1
-            },
-            "kind": "v12.0,user,vcore,serverless",
-            "properties": {
-                "maxSizeBytes": 1073741824,
-                "autoPauseDelay": 60,
-                "minCapacity": 0.5
-            }
-        }
-        ```
   
 Rexécuter votre template :
  - Aller dans le cloud shell en interface PowerShell
