@@ -70,17 +70,17 @@ L'application web est consultable en allant sur le lien transmis dans les propri
 
 ## Etape 2 - Créer un Storage Account en utilisant az cli
 Dans cette étape, nous allons utiliser l'interface de ligne de commande Azure appelée az cli.
-Elle peut être installée sur votre poste de travail en suivant [ce lien](#https://docs.microsoft.com/fr-fr/cli/azure/install-azure-cli?view=azure-cli-latest) ou via l'option Cloud Shell du portail Azure, nous utiliserons cette méthode dans l'exercice suivant
+Elle peut être installée sur votre poste de travail en suivant [ce lien](https://docs.microsoft.com/fr-fr/cli/azure/install-azure-cli?view=azure-cli-latest) ou via l'option Cloud Shell du portail Azure, nous utiliserons cette méthode dans l'exercice suivant
 
-Sur le portail Azure, lancer le Cloud Shell
+Sur le portail Azure, lancer le Cloud Shell  
 ![Cloud Shell](./images/step2_cloud_shell.PNG)  
 
-Lors de sa première exécution, un popup va vous signaler que le Cloud Shell n'est pas configuré
+Lors de sa première exécution, un popup va vous signaler que le Cloud Shell n'est pas configuré  
 ![Cloud Shell](./images/step2_cloud_shell_warning.PNG)  
 
 Il faut donc le configurer. Pour cela, Azure va créer un Resource Group sur votre souscription avec un Storage Account qui servira à stocker le paramétrage du Cloud Shell. Si il n'y a pas de Cloud Shell existant pour votre souscription, merci de suivre les indications suivantes :
  - Cliquer sur advanced settings
- - Configurer les propriétés
+ - Configurer les propriétés  
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
 | Cloud Shell region | Région d'hébergement | Choisir `France Central`
@@ -101,18 +101,18 @@ Configurer ensuite l'environnement de travail Azure à manipuler avec az cli :
  - Choisir la souscriptions à manipuler : `az account set --subscription "XXXXX"` (où XXXXX = ID de votre souscription récupéré dans le résultat de la commande précédente)
   - A tout moment, pour une aide sur une commande `az XXX --help`(où XXX = commande sur laquelle obtenir de l'aide)
 
-Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice : `az storage account create --name dojoazureus01ex01 --resource-group dojoazure-us01-ex01 --location francecentral --https-only --kind StorageV2 --sku Standard_LRS --tags project=dojoazure,exercice=ex01,user=us01`
+Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice : `az storage account create --name dojoazureus01ex01 --resource-group dojoazure-us01-ex01 --location francecentral --https-only --kind StorageV2 --sku Standard_LRS --tags project=dojoazure exercice=ex01 user=us01`
   
 Quelques explications :
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
-| --name | Nom du Storage Account à créer | Ici `` (attention, nom unique pour la région)
-| --resource-group | Nom du RG dans lequel créer le Storage Account | Ici `` (idem à l'étape 1 de cet exercice)
+| --name | Nom du Storage Account à créer | Ici `dojoazureus01ex01` (attention, nom unique pour la région)
+| --resource-group | Nom du RG dans lequel créer le Storage Account | Ici `dojoazure-us01-ex01` (idem à l'étape 1 de cet exercice)
 | --location | Région du Storage Account | Ici `francecentral`
 | --https-only | Paramètre qui précise que le Storage Account ne sera utilisable qu'en https | 
 | --kind | Paramètre pour préciser le type de Storage Account | Ici `StorageV2` qui indique la V2
-| --sku | Paramètre pour préciser le SKU du Storage Account | Ici `Standard_LRS` qui indique que le storage sera de type Standard et en LRS ([cf. SKU Storage Account](#https://docs.microsoft.com/en-us/rest/api/storagerp/srp_sku_types))
-| --tags | Région du Storage Account | Ici `project=dojoazure,exercice=ex01,user=us01` (idem aux tags utilisés pour la WebApp de l'étape 1)
+| --sku | Paramètre pour préciser le SKU du Storage Account | Ici `Standard_LRS` qui indique que le storage sera de type Standard et en LRS ([cf. SKU Storage Account](https://docs.microsoft.com/en-us/rest/api/storagerp/srp_sku_types))
+| --tags | Région du Storage Account | Ici `project=dojoazure exercice=ex01 user=us01` (idem aux tags utilisés pour la WebApp de l'étape 1)
 
 > 👏 Bravo, votre Storage Account est créé !
 
