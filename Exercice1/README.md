@@ -214,9 +214,9 @@ Quelques fonctions utilisées dans le template :
             `"defaultValue": "[utcNow()]"`  
         `}`  
   - Dans la section "variables", ajouter les deux variables suivantes qui correspondront aux noms de l'Azure SQL Server et à l'Azure SQL Database :  
-        `"dbserver_name" : "[concat(parameters('user_id'), '-db')]",`
+        `"dbserver_name" : "[concat(parameters('user_id'), '-db')]",`  
         `"db_name" : "[concat(parameters('user_id'), '-db')]"`  
-  - Toujours dans la section "variables", ajouter la variable suivante qui créé un mot de passe unique pour le compte admin d'Azure SQL Server :
+  - Toujours dans la section "variables", ajouter la variable suivante qui créé un mot de passe unique pour le compte admin d'Azure SQL Server :  
         `"administratorLoginPassword" : "[concat('db', uniqueString(concat(parameters('user_id'), variables('dbserver_name'), parameters('date'))),'!')]"`
   - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL Server :  
         `{`  
@@ -230,7 +230,7 @@ Quelques fonctions utilisées dans le template :
                 `"administratorLoginPassword": "[variables('administratorLoginPassword')]"`  
             `}`  
         `}`  
-  - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL DB :
+  - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL DB :  
         `{`  
             `"type": "microsoft.sql/servers/databases",`  
             `"apiVersion": "2019-06-01-preview",`  
@@ -251,10 +251,10 @@ Quelques fonctions utilisées dans le template :
                 `"minCapacity": 0.5`  
             `}`  
         `}`  
-
+  
 Rexécuter votre template :
  - Aller dans le cloud shell en interface PowerShell
- - Uploader votre template via le bouton ![Cloud Shell upload](./images/step4_cloud_shell_upload.PNG)  
+ - Uploader votre template via le bouton ![Cloud Shell upload](./images/step4_cloud_shell_upload.PNG) sauf si vous l'avez édité directement dans le Cloud Shell  
  - Lancer la commande suivante :  
  `New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateFile ./azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
  (où usXX = votre id user, par exemple "us01")
