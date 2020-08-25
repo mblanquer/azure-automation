@@ -5,7 +5,8 @@ Objectif : le but de cet exercice est de se familiariser avec Azure et le déplo
 Tâches : 
  - [Etape 1 : créer une webapp au travers du portail Azure](.#etape-1---cr%C3%A9er-une-webapp-via-le-portail-azure)
  - [Etape 2 : ajouter un storage account à votre déploiement via Azure Cli](.#etape-2---cr%C3%A9er-un-storage-account-en-utilisant-az-cli)
- - [Etape 3 : ajouter une base de données Azure SQL DB via Azure ARM](.#etape-3---cr%C3%A9er-une-base-de-donn%C3%A9es-azure-sql-db-en-utilisant-un-template-arm)
+ - [Etape 2 : ajouter un storage account à votre déploiement via la cmdlet Powershell ARM](.#etape-3---cr%C3%A9er-un-storage-account-en-utilisant-la-cmdlet-powerhsell-arm)
+ - [Etape 4 : ajouter une base de données Azure SQL DB via Azure ARM](.#etape-4---cr%C3%A9er-une-base-de-donn%C3%A9es-azure-sql-db-en-utilisant-un-template-arm)
 
 ## Etape 1 - Créer une WebApp via le portail Azure
 Se connecter au portail Azure : https://portal.azure.com
@@ -112,8 +113,39 @@ Quelques explications :
 | --https-only | Paramètre qui précise que le Storage Account ne sera utilisable qu'en https | 
 | --kind | Paramètre pour préciser le type de Storage Account | Ici `StorageV2` qui indique la V2
 | --sku | Paramètre pour préciser le SKU du Storage Account | Ici `Standard_LRS` qui indique que le storage sera de type Standard et en LRS ([cf. SKU Storage Account](https://docs.microsoft.com/en-us/rest/api/storagerp/srp_sku_types))
-| --tags | Région du Storage Account | Ici `project=dojoazure exercice=ex01 user=us01` (idem aux tags utilisés pour la WebApp de l'étape 1)
+| --tags | Tags associés au Storage Account | Ici `project=dojoazure exercice=ex01 user=us01` (idem aux tags utilisés pour la WebApp de l'étape 1)
 
 > 👏 Bravo, votre Storage Account est créé !
 
-## Etape 3 - Créer une base de données Azure SQL DB en utilisant un template ARM
+## Etape 3 - Créer un Storage Account en utilisant la cmdlet Powerhsell ARM
+A l'instar de l'étape précédente, nous allons utiliser le Cloud Shell pour utiliser la cmdlet Powershell ARM. C'est un module powershell qui permet de manipuler Azure via Azure Resource Manager
+
+Sur le portail Azure, aller sur le Cloud Shell  
+
+Une fois le Cloud Shell démarré, vous avez le choix entre une interface bash ou Powershell. Choisissez l'interface Powershell
+![Cloud Shell powershell](./images/step2_cloud_shell_powershell.PNG)  
+
+> 👀 si vous utilisez le module Powershell sur votre poste, bien vous authentifier sur Azure via la commande `Login-AzAccount` avant de suivre la suite de l'exercice
+
+Configurer ensuite l'environnement de travail Azure à manipuler avec az cli :
+ - Lister les souscriptions de votre abonnement : `Get-AzSubscription`
+ - Choisir la souscriptions à manipuler : `Select-AzSubscription -SubscriptionId "XXXXX"` (où XXXXX = ID de votre souscription récupéré dans le résultat de la commande précédente)
+  - A tout moment, pour une aide sur une commande `Get-Help XXX`(où XXX = commande sur laquelle obtenir de l'aide)
+
+Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice : `New-AzStorageAccount -Name dojoazureus01ex01c -ResourceGroupName dojoazure-us01-ex01 -Location francecentral -EnableHttpsTrafficOnly $true -Kind StorageV2 -sku Standard_LRS  -Tags @{project="dojoazure";exercice="ex01";user="us01"}`
+  
+Quelques explications :
+| Propriétés | Description | Valeur |
+| --- | --- | --- |
+| -Name | Nom du Storage Account à créer | Ici `dojoazureus01ex01` (attention, nom unique pour la région)
+| -ResourceGroupName | Nom du RG dans lequel créer le Storage Account | Ici `dojoazure-us01-ex01` (idem à l'étape 1 de cet exercice)
+| -Location | Région du Storage Account | Ici `francecentral`
+| -EnableHttpsTrafficOnly | Paramètre qui précise que le Storage Account ne sera utilisable qu'en https | ici boolean `$true`
+| -Kind | Paramètre pour préciser le type de Storage Account | Ici `StorageV2` qui indique la V2
+| -Sku | Paramètre pour préciser le SKU du Storage Account | Ici `Standard_LRS` qui indique que le storage sera de type Standard et en LRS ([cf. SKU Storage Account](https://docs.microsoft.com/en-us/rest/api/storagerp/srp_sku_types))
+| -Tags | Tags associés au Storage Account | Ici `@{project="dojoazure";exercice="ex01";user="us01"}` (idem aux tags utilisés pour la WebApp de l'étape 1)
+
+> 👏 Bravo, votre Storage Account est créé !
+
+## Etape 4 - Créer une base de données Azure SQL DB en utilisant un template ARM
+
