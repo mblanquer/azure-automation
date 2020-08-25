@@ -118,7 +118,7 @@ Quelques explications :
   
 ![Storage Account created](./images/step2_results.PNG)  
 
-> 👏 Bravo, votre Storage Account est créé !
+> 👏 Bravo, votre Storage Account est créé via az cli !
 
 ## Etape 3 - Créer un Storage Account en utilisant la cmdlet Powerhsell ARM
 A l'instar de l'étape précédente, nous allons utiliser le Cloud Shell pour utiliser la cmdlet Powershell ARM. C'est un module powershell qui permet de manipuler Azure via Azure Resource Manager
@@ -151,7 +151,7 @@ Quelques explications :
   
 ![Storage Account created PS](./images/step3_results.PNG)  
 
-> 👏 Bravo, votre Storage Account est créé !
+> 👏 Bravo, votre Storage Account est créé via la cmdlet Powershel ARM !
 
 ## Etape 4 - Créer une base de données Azure SQL DB en utilisant un template ARM
 Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra As A Code qui permet de créer des ressources Azure en utilisant un langage descriptif s'appuyant sur les Templates ARM. Basé sur Azure Resource Manager, les templates ARM permettent de décrire l'infrastructure Azure souhaitée au format json puis lors de l'exécution, les API ARM Azure sont sollicités pour interprêter le template
@@ -159,7 +159,8 @@ Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra
 Le fichier [azdeploy.json](./azdeploy.json) correspond à un template ARM qui permet de déployer les Etapes 1 à 3 de cet exercice.
 
 Vous pouvez déployer ce template en allant sur le Cloud Shell (interface powerhshell) et en exécutant la commande suivante :  
-`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateUri https://raw.githubusercontent.com/mblanquer/azure-automation/prepa_dojo/Exercice1/azuredeploy.json -TemplateParameterObject @{"user_id"="us11"}`
+`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateUri https://raw.githubusercontent.com/mblanquer/azure-automation/prepa_dojo/Exercice1/azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
+(où usXX = votre id user, par exemple "us01")
   
 Quelques explications :
 | Propriétés | Description |
@@ -194,3 +195,81 @@ Avant de poursuivre l'exercice, il convient de comprendre la structure d'un temp
 | outputs | Section qui permet de définir quels seront les outputs de ce template lors de son exécution
 
 _Remarque_ : la doc des API ARM et des propriétés attendues par ressource est disponible [sur ce lien](https://docs.microsoft.com/en-us/azure/templates/microsoft.aad/allversions)
+  
+Quelques fonctions utilisées dans le template :
+ - `[ResourceGroup().location]` : utilisé pour définir que la location d'une ressource hérite de la location du Resource Group dans lequel elle est déployée
+ - `[concat()]` : permet de concatener des paramètres/variables/chaines de caractères
+ - `[parameters('xxx')]`: permet de faire référence au paramètre xxx reçu en input du template
+ - `[variables('xxx')]`: permet de faire référence à la variable xxx définie dans le template
+ - `dependsOn`: permet de spécifier que le déploiement de la ressource concernée est dépendante du déploiement d'une autre resource Azure définie dans le template. Automatiquement, ARM va attendre que cette ressource soit déployée pour déployer la ressource définie. Dans le cas contraire, il parallélise le déploiement des deux ressources
+
+ > 📘 Vous savez comment est structuré un template ARM et comment l'exécuter pour créer vos ressources dans Azure !
+
+ Ajoutons maintenant la base de données à ce template :
+  - Télécharger le fichier azdeploy.json et éditez le avec l'éditeur de votre choix. Si vous le souhaitez, vous pouvez utiliser l'éditeur situé dans le Cloud Shell Azure en appuyant sur le bouton suivant ![Cloud Shell edit](./images/step4_cloud_shell_edit.PNG) une fois le CS démarré. vous pouvez même cloner le repo GitHub pour récupérer le fichier .json via la commande `git clone https://github.com/mblanquer/azure-automation.git`  
+  ![Cloud Shell edit view](./images/step4_cloud_shell_edit_view.PNG)  
+  - Dans la section "parameters", ajouter le paramètre suivant qui sera utilisé pour créer un password unique pour le compte admin SQL :  
+        `"date": {`  
+            `"type": "String",`  
+            `"defaultValue": "[utcNow()]"`  
+        `}`  
+  - Dans la section "variables", ajouter les deux variables suivantes qui correspondront aux noms de l'Azure SQL Server et à l'Azure SQL Database :  
+        `"dbserver_name" : "[concat(parameters('user_id'), '-db')]",`
+        `"db_name" : "[concat(parameters('user_id'), '-db')]"`  
+  - Toujours dans la section "variables", ajouter la variable suivante qui créé un mot de passe unique pour le compte admin d'Azure SQL Server :
+        `"administratorLoginPassword" : "[concat('db', uniqueString(concat(parameters('user_id'), variables('dbserver_name'), parameters('date'))),'!')]"`
+  - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL Server :  
+        `{`  
+            `"type": "microsoft.sql/servers",`  
+            `"apiVersion": "2019-06-01-preview",`  
+            `"name": "[variables('dbserver_name')]",`  
+            `"location": "[resourceGroup().location]",`  
+            `"tags": "[variables('tags')]",`  
+            `"properties": {`  
+                `"administratorLogin": "adminDB",`  
+                `"administratorLoginPassword": "[variables('administratorLoginPassword')]"`  
+            `}`  
+        `}`  
+  - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL DB :
+        `{`  
+            `"type": "microsoft.sql/servers/databases",`  
+            `"apiVersion": "2019-06-01-preview",`  
+            `"name": "[concat(variables('dbserver_name'), '/', variables('db_name'))]",`  
+            `"location": "[resourceGroup().location]",`  
+            `"dependsOn": ["[variables('dbserver_name')]"],`  
+            `"tags": "[variables('tags')]",`  
+            `"sku": {`  
+                `"name": "GP_S_Gen5",`  
+                `"tier": "GeneralPurpose",`  
+                `"family": "Gen5",`  
+                `"capacity": 1`  
+            `},`  
+            `"kind": "v12.0,user,vcore,serverless",`  
+            `"properties": {`  
+                `"maxSizeBytes": 1073741824,`  
+                `"autoPauseDelay": 60,`  
+                `"minCapacity": 0.5`  
+            `}`  
+        `}`  
+
+Rexécuter votre template :
+ - Aller dans le cloud shell en interface PowerShell
+ - Uploader votre template via le bouton ![Cloud Shell upload](./images/step4_cloud_shell_upload.PNG)  
+ - Lancer la commande suivante :  
+ `New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateFile ./azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
+ (où usXX = votre id user, par exemple "us01")
+ - Vous devriez voir votre Azure SQL DB et Azure SQL Server créé dans le Resource Group :
+ ![step 4 results](./images/step4_results.PNG) 
+
+Le template ARM correspondant aux ajouts effectués ci-dessous est [db_azdeploy.json](#./db_azdeploy.json)
+
+> 👏 Bravo, votre database Azure SQL est créé via un template ARM !
+
+
+----------------------------------------------------------------------------------------------------------------
+Au travers de cet exercice, vous avez appris à :
+ - vous familiarisez avec Azure
+ - à manipuler des ressources Azure via le Portail Azure
+ - à manipuler des ressources Azure via l'interface de commande az cli
+ - à manipuler des ressources Azure via la cmdlet Powershell ARM
+ - à manipuler des ressources Azure via un template ARM
