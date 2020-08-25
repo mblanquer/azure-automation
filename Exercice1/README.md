@@ -102,7 +102,8 @@ Configurer ensuite l'environnement de travail Azure à manipuler avec az cli :
  - Choisir la souscriptions à manipuler : `az account set --subscription "XXXXX"` (où XXXXX = ID de votre souscription récupéré dans le résultat de la commande précédente)
   - A tout moment, pour une aide sur une commande `az XXX --help`(où XXX = commande sur laquelle obtenir de l'aide)
 
-Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice : `az storage account create --name dojoazureus01ex01 --resource-group dojoazure-us01-ex01 --location francecentral --https-only --kind StorageV2 --sku Standard_LRS --tags project=dojoazure exercice=ex01 user=us01`
+Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice : 
+`az storage account create --name dojoazureus01ex01 --resource-group dojoazure-us01-ex01 --location francecentral --https-only --kind StorageV2 --sku Standard_LRS --tags project=dojoazure exercice=ex01 user=us01`
   
 Quelques explications :
 | Propriétés | Description | Valeur |
@@ -134,7 +135,8 @@ Configurer ensuite l'environnement de travail Azure à manipuler avec az cli :
  - Choisir la souscriptions à manipuler : `Select-AzSubscription -SubscriptionId "XXXXX"` (où XXXXX = ID de votre souscription récupéré dans le résultat de la commande précédente)
   - A tout moment, pour une aide sur une commande `Get-Help XXX`(où XXX = commande sur laquelle obtenir de l'aide)
 
-Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice : `New-AzStorageAccount -Name dojoazureus01ex01ps -ResourceGroupName dojoazure-us01-ex01 -Location francecentral -EnableHttpsTrafficOnly $true -Kind StorageV2 -sku Standard_LRS  -Tags @{project="dojoazure";exercice="ex01";user="us01"}`
+Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice :
+`New-AzStorageAccount -Name dojoazureus01ex01ps -ResourceGroupName dojoazure-us01-ex01 -Location francecentral -EnableHttpsTrafficOnly $true -Kind StorageV2 -sku Standard_LRS  -Tags @{project="dojoazure";exercice="ex01";user="us01"}`
   
 Quelques explications :
 | Propriétés | Description | Valeur |
@@ -152,4 +154,43 @@ Quelques explications :
 > 👏 Bravo, votre Storage Account est créé !
 
 ## Etape 4 - Créer une base de données Azure SQL DB en utilisant un template ARM
+Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra As A Code qui permet de créer des ressources Azure en utilisant un langage descriptif s'appuyant sur les Templates ARM. Basé sur Azure Resource Manager, les templates ARM permettent de décrire l'infrastructure Azure souhaitée au format json puis lors de l'exécution, les API ARM Azure sont sollicités pour interprêter le template
 
+Le fichier [azdeploy.json](./azdeploy.json) correspond à un template ARM qui permet de déployer les Etapes 1 à 3 de cet exercice.
+
+Vous pouvez déployer ce template en allant sur le Cloud Shell (interface powerhshell) et en exécutant la commande suivante :
+`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateUri ## -TemplateParameterObject @{"user_id"="us11"}`
+
+Quelques explications :
+| Propriétés | Description |
+| --- | --- | 
+| New-AzResourceGroupDeployment | Commande Powershell pour le déploiement sur RG de templates ARM
+| -Name | Nom du déploiement
+| -ResourceGroupName | Nom du RG dans lequel créer le Storage Account
+| -Location | Région du Storage Account
+| -TemplateUri | Url du template ARM à exécuter
+| -TemplateParameterObject | Passage des paramètres au template ARM sous forme d'objet
+
+Les logs du déploiement de template ARM sont visibles dans l'écran "Deployments" du Resource Group concerné par le déploiement :  
+![RG deployment ARM Template logs](./images/step4_logs_ARM_deployment.PNG)  
+
+Avant de poursuivre l'exercice, il convient de comprendre la structure d'un template ARM :
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {},
+    "resources": [],
+    "outputs": {}
+}
+
+| Propriétés | Description |
+| --- | --- |
+| $schema | Lors de l'exécution du template, ce schéma sera utilisé pour vérifier que la syntaxe et les propriétés utilisées dans le json sont correctes
+| contentVersion | Permet de versionner le template 
+| parameters | Section qui permet de définir les paramètres attendus par le template. Dans ce template c'est le `user_id` qui permet d'identifier l'utilisateur. Cette valeur est ensuite utilisée pour définir un ensemble de noms utilisés sous forme de variables
+| variables | Section qui permet de définir des variables utilisées dans le template. Dans ce template, les noms des différentes ressources sont définis sous forme de variables qui utilise le paramètre `user_id` pour l'unicité des noms
+| resouces | Section qui permet de définir les ressources Azure à déployer. Il convient de renseigner le "provider" qui correspond au type de ressource mais aussi "l'api version" qui définit la version d'API ARM à utiliser
+| outputs | Section qui permet de définir quels seront les outputs de ce template lors de son exécution
+
+Remarque : la doc des API ARM et des propriétés attendues par ressource est disponible [sur ce lien](https://docs.microsoft.com/en-us/azure/templates/microsoft.aad/allversions)
