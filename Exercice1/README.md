@@ -25,7 +25,9 @@ Appuyez vous sur le tableau ci-dessous pour le choix des propriétés de votre W
 | Subscription | Souscription sur laquelle sera créée la WebApp | Votre souscription
 | Resource Group | Groupe de ressources dans lequel sera créé la WebApp | Cliquez sur "Create new" et choisir `dojoazure-us01-ex01` (us01 = votre id de user)
 | Name | Votre nom de webapp | Choisir `webapp-us01-ex01` (us01 = votre id de user)
-| Publish | Méthode de déploiement : - Code = runtime pré-installé par Azure - Docker Container = image docker à fournir | Choisir ce que vous voulez
+| Publish | Méthode de déploiement : 
+ - Code = runtime pré-installé par Azure
+ - Docker Container = image docker à fournir | Choisir ce que vous voulez
 
 
 - [Pré-requis](#pré-requis)
