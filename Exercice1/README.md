@@ -114,6 +114,8 @@ Quelques explications :
 | --kind | Paramètre pour préciser le type de Storage Account | Ici `StorageV2` qui indique la V2
 | --sku | Paramètre pour préciser le SKU du Storage Account | Ici `Standard_LRS` qui indique que le storage sera de type Standard et en LRS ([cf. SKU Storage Account](https://docs.microsoft.com/en-us/rest/api/storagerp/srp_sku_types))
 | --tags | Tags associés au Storage Account | Ici `project=dojoazure exercice=ex01 user=us01` (idem aux tags utilisés pour la WebApp de l'étape 1)
+  
+![Storage Account created](./images/step2_results.PNG)  
 
 > 👏 Bravo, votre Storage Account est créé !
 
@@ -132,18 +134,20 @@ Configurer ensuite l'environnement de travail Azure à manipuler avec az cli :
  - Choisir la souscriptions à manipuler : `Select-AzSubscription -SubscriptionId "XXXXX"` (où XXXXX = ID de votre souscription récupéré dans le résultat de la commande précédente)
   - A tout moment, pour une aide sur une commande `Get-Help XXX`(où XXX = commande sur laquelle obtenir de l'aide)
 
-Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice : `New-AzStorageAccount -Name dojoazureus01ex01c -ResourceGroupName dojoazure-us01-ex01 -Location francecentral -EnableHttpsTrafficOnly $true -Kind StorageV2 -sku Standard_LRS  -Tags @{project="dojoazure";exercice="ex01";user="us01"}`
+Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice : `New-AzStorageAccount -Name dojoazureus01ex01ps -ResourceGroupName dojoazure-us01-ex01 -Location francecentral -EnableHttpsTrafficOnly $true -Kind StorageV2 -sku Standard_LRS  -Tags @{project="dojoazure";exercice="ex01";user="us01"}`
   
 Quelques explications :
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
-| -Name | Nom du Storage Account à créer | Ici `dojoazureus01ex01` (attention, nom unique pour la région)
+| -Name | Nom du Storage Account à créer | Ici `dojoazureus01ex01ps` (attention, nom unique pour la région)
 | -ResourceGroupName | Nom du RG dans lequel créer le Storage Account | Ici `dojoazure-us01-ex01` (idem à l'étape 1 de cet exercice)
 | -Location | Région du Storage Account | Ici `francecentral`
 | -EnableHttpsTrafficOnly | Paramètre qui précise que le Storage Account ne sera utilisable qu'en https | ici boolean `$true`
 | -Kind | Paramètre pour préciser le type de Storage Account | Ici `StorageV2` qui indique la V2
 | -Sku | Paramètre pour préciser le SKU du Storage Account | Ici `Standard_LRS` qui indique que le storage sera de type Standard et en LRS ([cf. SKU Storage Account](https://docs.microsoft.com/en-us/rest/api/storagerp/srp_sku_types))
 | -Tags | Tags associés au Storage Account | Ici `@{project="dojoazure";exercice="ex01";user="us01"}` (idem aux tags utilisés pour la WebApp de l'étape 1)
+  
+![Storage Account created PS](./images/step3_results.PNG)  
 
 > 👏 Bravo, votre Storage Account est créé !
 
