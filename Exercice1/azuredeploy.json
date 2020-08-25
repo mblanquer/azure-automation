@@ -7,7 +7,7 @@
         }
     },
     "variables": {
-        "webapp_name": "webapp-us01-ex01",
+        "webapp_name": "[concat('webapp-', parameters('user_id'), '-ex01')]",
         "asp_name": "[concat(variables('webapp_name'), '-asp')]",
         "ai_name": "[concat(variables('webapp_name'), '-ai')]",
         "sa_name": "[concat('dojoazure', parameters('user_id'), 'ex01')]",
