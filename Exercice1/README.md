@@ -261,7 +261,7 @@ Rexécuter votre template :
  - Vous devriez voir votre Azure SQL DB et Azure SQL Server créé dans le Resource Group :
  ![step 4 results](./images/step4_results.PNG) 
 
-Le template ARM correspondant aux ajouts effectués ci-dessous est [db_azdeploy.json](#./db_azdeploy.json)
+Le template ARM correspondant aux ajouts effectués ci-dessous est [db_azdeploy.json](./db_azdeploy.json)
 
 > 👏 Bravo, votre database Azure SQL est créé via un template ARM !
 
