@@ -12,13 +12,13 @@ Se connecter au portail Azure : https://portal.azure.com
 Utiliser votre compte personnel disposant d'une souscription Azure
 
 Dans le "burger menu", choisir "Create a resource"
-![Create a resource](https://github.com/mblanquer/azure-automation/exercice1/images/create_resource.PNG)
+![Create a resource](https://github.com/mblanquer/azure-automation/prepa_dojo/exercice1/images/create_resource.PNG?raw=true)
 
 Puis chercher le terme "web app"
-![Create a Web App](https://github.com/mblanquer/azure-automation/exercice1/images/search_create_webapp.PNG)
+![Create a Web App](https://github.com/mblanquer/azure-automation/prepa_dojo/exercice1/images/search_create_webapp.PNG?raw=true)
 
 Appuyez vous sur le tableau ci-dessous pour le choix des propriétés de votre WebApp
-![Web App properties](https://github.com/mblanquer/azure-automation/exercice1/images/webapp_properties.PNG)
+![Web App properties](https://github.com/mblanquer/azure-automation/prepa_dojo/exercice1/images/webapp_properties.PNG?raw=true)
 
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
