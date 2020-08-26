@@ -112,8 +112,9 @@ Configurer ensuite l'environnement de travail Azure à manipuler avec az cli :
   - A tout moment, pour une aide sur une commande `az XXX --help`(où XXX = commande sur laquelle obtenir de l'aide)
 
 Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice :  
-`az storage account create --name dojoazureus01ex01 --resource-group dojoazure-us01-ex01 --location francecentral --https-only --kind StorageV2 --sku Standard_LRS --tags project=dojoazure exercice=ex01 user=us01`
-  
+`az storage account create --name dojoazureusXXex01 --resource-group dojoazure-usXX-ex01 --location francecentral --https-only --kind StorageV2 --sku Standard_LRS --tags project=dojoazure exercice=ex01 user=usXX`
+Veillez à adapter la valeur de usXX avec votre id user.
+
 Quelques explications :
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
@@ -135,7 +136,8 @@ Après quelques secondes, votre Storage Account sera visible dans votre RG :
 A l'instar de l'étape précédente, nous allons utiliser le Cloud Shell pour utiliser la cmdlet Powershell ARM. C'est un module powershell qui permet de manipuler Azure via Azure Resource Manager
 
 Voici la commande à exécuter pour créer le Storage Account de cet exercice :  
-`New-AzStorageAccount -Name dojoazureus01ex01ps -ResourceGroupName dojoazure-us01-ex01 -Location francecentral -EnableHttpsTrafficOnly $true -Kind StorageV2 -sku Standard_LRS  -Tags @{project="dojoazure";exercice="ex01";user="us01"}`
+`New-AzStorageAccount -Name dojoazureusXXex01ps -ResourceGroupName dojoazure-usXX-ex01 -Location francecentral -EnableHttpsTrafficOnly $true -Kind StorageV2 -sku Standard_LRS  -Tags @{project="dojoazure";exercice="ex01";user="usXX"}`
+Veillez à adapter la valeur de usXX avec votre id user.
   
 Quelques explications :
 | Propriétés | Description | Valeur |
@@ -160,7 +162,7 @@ Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra
 Le fichier [azdeploy.json](./azuredeploy.json) correspond à un template ARM qui permet de déployer les Etapes 1 à 3 de cet exercice.
 
 Vous pouvez déployer ce template en allant sur le Cloud Shell (interface powerhshell) et en exécutant la commande suivante :  
-`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateUri https://raw.githubusercontent.com/mblanquer/azure-automation/Exercice1/azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
+`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-usXX-ex01 -TemplateUri https://raw.githubusercontent.com/mblanquer/azure-automation/Exercice1/azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
 (où usXX = votre id user, par exemple "us01")
   
 Quelques explications :
@@ -284,7 +286,7 @@ Rexécuter votre template :
  - Aller dans le cloud shell en interface PowerShell
  - Uploader votre template via le bouton ![Cloud Shell upload](./images/step4_cloud_shell_upload.PNG) sauf si vous l'avez édité directement dans le Cloud Shell  
  - Lancer la commande suivante :  
- `New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateFile ./azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
+ `New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-usXX-ex01 -TemplateFile ./azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
  (où usXX = votre id user, par exemple "us01")
  - Vous devriez voir votre Azure SQL DB et Azure SQL Server créés dans le Resource Group :
  ![step 4 results](./images/step4_results.PNG) 
@@ -293,7 +295,13 @@ Le template ARM correspondant aux ajouts effectués ci-dessous est [db_azdeploy.
 
 > 👏 Bravo, votre database Azure SQL est créé via un template ARM !
 
+## Supprimer les ressources 
 
+En fin d'exercice, vous pouvez supprimer les ressources utilisées pendant l'exercice pour éviter une consommation inutile de crédits Azure.
+
+Voici la commande à utiliser :
+`Remove-AzResourceGroup -Name "dojoazure-usXX-ex01"` où usXX = user id
+  
 ----------------------------------------------------------------------------------------------------------------
 Au travers de cet exercice, vous avez appris à :
  - vous familiarisez avec Azure

@@ -156,6 +156,13 @@ Le playbook correspondant aux ajouts effectués ci-dessous est [azure_vm.yml](./
 
 Work in progress  
 
+## Supprimer les ressources 
+
+En fin d'exercice, vous pouvez supprimer les ressources utilisées pendant l'exercice pour éviter une consommation inutile de crédits Azure.
+
+Voici la commande à utiliser :
+`Remove-AzResourceGroup -Name "dojoazure-usXX-ex02"` où usXX = user id
+ 
 ----------------------------------------------------------------------------------------------------------------
 Au travers de cet exercice, vous avez appris à :
  - vous familiarisez avec Azure
