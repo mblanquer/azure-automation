@@ -219,7 +219,7 @@ Quelques fonctions utilisées dans le template :
         `"db_name" : "[concat(parameters('user_id'), '-ex01-db')]"`
   - Toujours dans la section "variables", ajouter la variable suivante qui créé un mot de passe unique pour le compte admin d'Azure SQL Server :  
         `"administratorLoginPassword" : "[concat('db', uniqueString(concat(parameters('user_id'), variables('dbserver_name'), parameters('date'))),'!')]"`
-  - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL Server :  
+  - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL Server qui hébergera l'Azure SQL DB :  
         `{`  
             `"type": "microsoft.sql/servers",`  
             `"apiVersion": "2019-06-01-preview",`  
@@ -231,6 +231,18 @@ Quelques fonctions utilisées dans le template :
                 `"administratorLoginPassword": "[variables('administratorLoginPassword')]"`  
             `}`  
         `}`  
+
+    Quelques explications autour de cette section (cf. [doc ici](https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers)) : 
+    | Paramètre | Description | Valeur |
+    | --- | --- | --- |
+    | type | Provider Azure utilisé - Correspond à l'API ARM utilisé par le template | Ici `"microsoft.sql/servers"` qui correspond à l'API utilisé pour la création d'Azure SQL Server
+    | apiVersion | Version d'API | Ici `"2019-06-01-preview"` qui correspond à la version de l'API à utiliser 
+    | name | Nom de l'Azure SQL Server | Ici `[variables('dbserver_name')]"` qui fait référence à la variable définie en début de template
+    | location | Région utilisée | ici boolean `"[resourceGroup().location]"` qui fait référence à la variable définie en début de template
+    | tags | Tags pour cette ressource | Ici `"[variables('tags')]"` qui fait référence à la variable définie en début de template
+    | properties/administratorLogin | Compte admin Azure SQL Server | Ici `"adminDB"` défini arbitrairement. Compte utile pour administrer le serveur dans un rôle "~sysadmin"
+    | properties/administratorLoginPassword | Mot de passe du compte admin | Ici `"[variables('administratorLoginPassword')]"` qui fait référence à la variable définie en début de template. Mot de passe créée à partir d'une combinaison de variables et de la date d'exécution du template => cela créé un mot de passe unique à chaque exécution de template
+    
   - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL DB :  
         `{`  
             `"type": "microsoft.sql/servers/databases",`  
@@ -252,7 +264,22 @@ Quelques fonctions utilisées dans le template :
                 `"minCapacity": 0.5`  
             `}`  
         `}`  
-  
+    
+    Quelques explications autour de cette section (cf. [doc ici](https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers)) : 
+    | Paramètre | Description | Valeur |
+    | --- | --- | --- |
+    | type | Provider Azure utilisé - Correspond à l'API ARM utilisé par le template | Ici `"microsoft.sql/servers/databases"` qui correspond à l'API utilisé pour la création d'Azure SQL Database
+    | apiVersion | Version d'API | Ici `"2019-06-01-preview"` qui correspond à la version de l'API à utiliser 
+    | name | Nom de l'Azure SQL Server | Ici `[concat(variables('dbserver_name'), '/', variables('db_name'))]"` qui fait référence à différentes variables définies en début de template. A noter qu'il y faut autant de "segments" que pour le type de ressources - 1. Ici : type = microsoft.sql/servers/databases = 3 segments, name = nom_dbserver / nom_database = 2 segments (3 - 1)
+    | location | Région utilisée | ici boolean `"[resourceGroup().location]"` qui fait référence à la variable définie en début de template
+    | dependsOn | Dépendance d'autre ressource | ici boolean `"[variables('dbserver_name')]"`. Cela permet de spécifier que le déploiement de l'Azure SQL DB est dépendante du déploiement de l'Azure SQL Server défini dans le template. Automatiquement, ARM va attendre que cette ressource soit déployée pour déployer l'autre. Dans le cas contraire, il parallélise le déploiement des deux ressources
+    | tags | Tags pour cette ressource | Ici `"[variables('tags')]"` qui fait référence à la variable définie en début de template
+    | sku | Paramètre pour préciser le SKU de DB | Ici on choisit une base de données basé sur un choix CPU exprimé en vCore et non en DTU. On défini une bdd avec maximum 1 vCore (cf. "capacity")
+    | kind | Paramètre pour préciser le type de DB | Ici on choisit une base de données de type Serverless qui ne consommera des crédits qu'en cas d'usage
+    | properties/maxSizeBytes | Taille de la DB | Ici 1Go
+    | properties/autoPauseDelay | Délai après laquelle l'infrastructure est libérée (mode serverless) | Ici 60 minutes. Après 60 minutes d'inactivité, la DB n'utilisera plus d'infra de compute et donc consommera moins de crédits. En cas de sollicitation, une infra sera créée par Azure pour répondre aux requêtes
+    | properties/minCapacity | Nombre de vCore minimum utilisés | Ici 0,5 vCore. La DB est donc configurée pour consommer 0,5 vCore et peut consommer jusqu'à 1 vCore (cf. "sku/capacity") si besoin (forte sollicitation)
+    
 Rexécuter votre template :
  - Aller dans le cloud shell en interface PowerShell
  - Uploader votre template via le bouton ![Cloud Shell upload](./images/step4_cloud_shell_upload.PNG) sauf si vous l'avez édité directement dans le Cloud Shell  
