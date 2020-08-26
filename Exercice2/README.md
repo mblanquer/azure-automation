@@ -21,7 +21,7 @@ Sur le portail Azure, lancer le Cloud Shell
 ![Cloud Shell](../Exercice1/images/step2_cloud_shell.PNG)  
 
 Lors de sa première exécution, un popup va vous signaler que le Cloud Shell n'est pas configuré  
-![Cloud Shell](./Exercice1/images/step2_cloud_shell_warning.PNG)  
+![Cloud Shell](../Exercice1/images/step2_cloud_shell_warning.PNG)  
 
 Il faut donc le configurer. Pour cela, Azure va créer un Resource Group sur votre souscription avec un Storage Account qui servira à stocker le paramétrage du Cloud Shell. Si il n'y a pas de Cloud Shell existant pour votre souscription, merci de suivre les indications suivantes :
  - Cliquer sur advanced settings
@@ -33,11 +33,11 @@ Il faut donc le configurer. Pour cela, Azure va créer un Resource Group sur vot
 | Storage account | Utilisé pour sauvegarder les propriétés du CS | Indiquer `cloudshellsaXXXX` (XXXX = chaine de caractères aléatoire)*
 | File share | File share qui sera utilisé pour sauvegarder votre espace CS dans le Storage Account | Choisir `cloudshellfs`
 *un storage account doit avoir un nom unique dans une région donnée car cela réserve un alias DNS dans Azure qui doit être unique
-![Cloud Shell properties](./Exercice1/images/step2_cloud_shell_properties.PNG)
+![Cloud Shell properties](../Exercice1/images/step2_cloud_shell_properties.PNG)
  - Cliquer sur "create storage"
 
 Une fois le Cloud Shell démarré, vous avez le choix entre une interface bash ou Powershell. Choisissez celle qui vous plait le plus. Cela n'a pas d'incidence sur l'usage d'ansible. Ici l'interface PowerShell
-![Cloud Shell powershell](./images/step2_cloud_shell_powershell.PNG)  
+![Cloud Shell powershell](../images/step2_cloud_shell_powershell.PNG)  
 
 > 👀 si vous utilisez Ansible sur votre poste, avant de suivre la suite de l'exercice, utilisez la commande suivante pour vous authentifier sur Azure et utiliser la bonne souscription : `az login` (nécessite az cli sur votre poste)
 
@@ -47,14 +47,14 @@ Configurer ensuite l'environnement de travail Azure à l'aide d'az cli :
 
 Vous allez maintenant travailler sur ansible à la création d'un playbook permettant de créer une VM sur Azure.
 Vous pouvez :
- - soit vous appuyez sur un playbook existant qui créer de base un certain nombre de ressources Azure utiles à l'hébergement de la VM
+ - soit vous appuyer sur un playbook existant qui créer de base un certain nombre de ressources Azure utiles à l'hébergement de la VM
  - soit vous pouvez créer votre playbook from scrath. A noter qu'il vous faudra créer un Resource Group, un VNET, un subnet et un NSG en pré-requis de la création de la VM
 
 Si vous créez votre playbook, merci de ne pas suivre les indications ci-dessous et de vous reporter à l'étape 2 une fois votre VM créée.
 
 Si vous vous initiez à Ansible, vous pouvez vous appuyer sur le playbook [azure.yml](./azure.yml) existant dans le repo.
 Examinons donc ce playbook ansible :
-  - Télécharger le fichier azure.yml et éditez le avec l'éditeur de votre choix. Si vous le souhaitez, vous pouvez utiliser l'éditeur situé dans le Cloud Shell Azure en appuyant sur le bouton suivant ![Cloud Shell edit](./images/step4_cloud_shell_edit.PNG) une fois le CS démarré. vous pouvez même cloner le repo GitHub pour récupérer le fichier .yml via la commande `git clone https://github.com/mblanquer/azure-automation.git`  
+  - Télécharger le fichier azure.yml et éditez le avec l'éditeur de votre choix. Si vous le souhaitez, vous pouvez utiliser l'éditeur situé dans le Cloud Shell Azure en appuyant sur le bouton suivant ![Cloud Shell edit](../Exercice1/images/step4_cloud_shell_edit.PNG) une fois le CS démarré. vous pouvez même cloner le repo GitHub pour récupérer le fichier .yml via la commande `git clone https://github.com/mblanquer/azure-automation.git`  
   - Un playbook Ansible permet d'orchestrer des tâches qui seront exécutées sur un ensemble de machines. Se référer à la [documentation suivante](https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html) pour en apprendre plus sur les playbooks Ansible
   - La structure du playbook est la suivante :  
     `- hosts: localhost`  
@@ -63,11 +63,12 @@ Examinons donc ce playbook ansible :
         
     | Section | Description |
     | --- | --- |
-    | hosts | Défini sur quel machine seront executées les tâches du playbooks. Ansible va alors regarder dans "l'inventory" configuré pour voir quelles sont les machines liées à la valeur renseignée dans ce paramètre "hosts". Dans notre cas, pour créer les ressources Azure, nous le faisons depuis notre machine / Cloud Shell donc nous l'avons défini à `localhost` 
+    | hosts | Défini sur quelle(s) machine(s) seront executées les tâches du playbooks. Ansible va alors regarder dans "l'inventory" configuré pour voir quelles sont les machines liées à la valeur renseignée dans ce paramètre "hosts". Dans notre cas, pour créer les ressources Azure, nous le faisons depuis notre machine / Cloud Shell donc nous l'avons défini à `localhost` 
     | vars | Défini les variables qui seront utilisées dans le playbook
     | tasks | Défini les tâches qui seront exécutées dans ce playbook
 
   - Zoom sur la section "vars" de ce playbook :  
+  
     | Variable | Description | Valeur | 
     | --- | --- | --- |
     | var_rg | Nom du Resource Group à créer | `"dojoazure-{{user_id}}-ex02"` A noter qu'on utilise `{{user_id}}` pour faire référence à une autre variable. Ici `user_id` qui correspondra à l'id utilisateur (ex : us01), variable qui sera transmise à l'exécution du playbook
