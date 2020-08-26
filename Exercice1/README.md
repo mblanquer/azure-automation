@@ -87,6 +87,7 @@ Lors de sa première exécution, un popup va vous signaler que le Cloud Shell n'
 Il faut donc le configurer. Pour cela, Azure va créer un Resource Group sur votre souscription avec un Storage Account qui servira à stocker le paramétrage du Cloud Shell. Si il n'y a pas de Cloud Shell existant pour votre souscription, merci de suivre les indications suivantes :
  - Cliquer sur advanced settings
  - Configurer les propriétés  
+ 
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
 | Cloud Shell region | Région d'hébergement | Choisir `France Central`
