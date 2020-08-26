@@ -78,8 +78,8 @@ Examinons donc ce playbook ansible :
     | var_nsg_vm_name | Nom du Network Security Group (NSG) créé pour protéger le subnet | `"nsg-{{user_id}}-ex02-vms-nsg"` Ce NSG sera associé au subnet vms et protégera ce dernier au travers de règles de filtrage réseau
     | var_tags | Tags à appliquer sur les ressources | `project: dojoazure user: us01 exercice: ex02`  
       
-    - Zoom sur la section "tasks" de ce playbook : 
-    
+    - Zoom sur la section "tasks" de ce playbook :  
+
     | Task | Description | 
     | --- | --- | 
     | Create resource group | Tâche de création du Resource Group (RG) dans lequel seront créés les ressources Azure. S'appuie sur le module ansible "azure_rm_resourcegroup" auquel sont passés différents paramètres : name (nom du RG) et location (région pour ce RG)
@@ -138,9 +138,12 @@ Cela va donc créer les ressources dans Azure, de la sorte :
     | image | Précise l'image de VM à utiliser pour la création de cette VM | Ici est utilisé une VM de type Datacenter en WS 2019 dans la dernière version proposée au catalogue par Microsoft  
     | vm_size | Taille de la VM (cpu, RAM) | Ici `Standard_DS1_v2` qui correspond à une VM d'usage générale (répartition équitable entre CPU et RAM) avec 1 vCPU et 3,5 Go de RAM et stockage temporaire de 7 Go (cf. [doc de référence](https://docs.microsoft.com/fr-fr/azure/virtual-machines/sizes))
   - Toujours dans la sections "tasks", ajouter le bloc suivant pour visualiser le résultat de la création de la VM (variable vm_windows du paramètre register de la tâche de création de VM) :  
-        `- debug:` 
+        `- debug:`  
             `var: vm_windows` 
-  
+  - Bien faire l'indentation du fichier :  
+    ![step 1 indentation](./images/step1_indentation.PNG) 
+    
+
   Rexécuter votre template :
  - Aller dans le cloud shell 
  - Lancer la commande suivante :  
