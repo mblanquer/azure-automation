@@ -68,7 +68,7 @@ Examinons donc ce playbook ansible :
     | tasks | Défini les tâches qui seront exécutées dans ce playbook
 
   - Zoom sur la section "vars" de ce playbook :  
-  
+
     | Variable | Description | Valeur | 
     | --- | --- | --- |
     | var_rg | Nom du Resource Group à créer | `"dojoazure-{{user_id}}-ex02"` A noter qu'on utilise `{{user_id}}` pour faire référence à une autre variable. Ici `user_id` qui correspondra à l'id utilisateur (ex : us01), variable qui sera transmise à l'exécution du playbook
@@ -79,6 +79,7 @@ Examinons donc ce playbook ansible :
     | var_tags | Tags à appliquer sur les ressources | `project: dojoazure user: us01 exercice: ex02`  
       
     - Zoom sur la section "tasks" de ce playbook : 
+    
     | Task | Description | 
     | --- | --- | 
     | Create resource group | Tâche de création du Resource Group (RG) dans lequel seront créés les ressources Azure. S'appuie sur le module ansible "azure_rm_resourcegroup" auquel sont passés différents paramètres : name (nom du RG) et location (région pour ce RG)
