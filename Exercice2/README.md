@@ -4,7 +4,7 @@
 Objectif : le but de cet exercice est d'apprendre à manipuler Azure avec Ansible.
 
 Les étapes de cet exercice : 
- - [Etape 1 : Créer une Virtual Machine Azure avec Ansible](.#etape-1---cr%C3%A9er-une-virtual-machine-avec-ansible)
+ - [Etape 1 : Créer une Virtual Machine Azure avec Ansible](.#etape-1---cr%C3%A9er-une-virtual-machine-azure-avec-ansible)
  - [Etape 2 : Configurer IIS sur votre Virtual Machine avec Ansible](.#etape-2---configurer-iis-sur-votre-virtual-machine-avec-ansible)
     
 ## Pré-requis
