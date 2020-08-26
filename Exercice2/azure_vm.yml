@@ -68,9 +68,9 @@
       azure_rm_virtualmachine:
         name: "{{var_vm_name}}"
         resource_group: "{{var_rg}}"
-        admin_username: "admincheops"
+        admin_username: "adminvm"
         admin_password: "{{admin_password}}"
-        managed_disk_type: Standard_LRS
+        managed_disk_type: StandardSSD_LRS
         virtual_network_name: "{{var_vnet_name}}"
         subnet_name: "{{var_subnet_vm_name}}"
         os_type: "Windows"
