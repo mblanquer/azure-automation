@@ -9,7 +9,7 @@
     "variables": {
         "webapp_name": "[concat('webapp-', parameters('user_id'), '-ex01')]",
         "asp_name": "[concat(variables('webapp_name'), '-asp')]",
-        "ai_name": "[concat(variables('webapp_name'), '-ai')]",
+        "ai_name": "[variables('webapp_name')]",
         "sa_name": "[concat('dojoazure', parameters('user_id'), 'ex01')]",
         "saps_name": "[concat('dojoazure', parameters('user_id'), 'ex01ps')]",
         "tags": {"project":"dojoazure","user":"us01","exercice":"ex01"}

@@ -63,7 +63,7 @@ Cliquez sur "Review + create" puis "Create" une fois la validation Azure passée
 Une fois le déploiement effectuée, allez sur votre Resource Group `dojoazure-usXX-ex01` et observez les resources créées : 
  - Votre WebApp `webapp-usXX-ex01` qui hébergera votre application
  - Votre WebApp `webapp-usXX-ex01-asp` qui définit la puissance allouée à votre webapp (nombre et tailles des machines/instances sous-adjacentes)
- - Votre Application Insights `webapp-usXX-ex01-ai` qui capturera automatiquement les données de monitoring de votre application
+ - Votre Application Insights `webapp-usXX-ex01` qui capturera automatiquement les données de monitoring de votre application
   
 ![Web App RG](./images/step1_webapp_RG_results.PNG)
 
@@ -89,12 +89,12 @@ Il faut donc le configurer. Pour cela, Azure va créer un Resource Group sur vot
  - Configurer les propriétés  
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
-| Cloud Shell region | Région d'hébergement | Choisir `France Central`
-| Resource Group | Groupe de ressources pour votre Cloud Shell | Indiquer `cloudshell`
+| Cloud Shell region | Région d'hébergement | Choisir `France Central` |
+| Resource Group | Groupe de ressources pour votre Cloud Shell | Indiquer `cloudshell` |
 | Storage account | Utilisé pour sauvegarder les propriétés du CS | Indiquer `cloudshellsaXXXX` (XXXX = chaine de caractères aléatoire)*
 | File share | File share qui sera utilisé pour sauvegarder votre espace CS dans le Storage Account | Choisir `cloudshellfs`
 *un storage account doit avoir un nom unique dans une région donnée car cela réserve un alias DNS dans Azure qui doit être unique
-![Cloud Shell properties](./images/step2_cloud_shell_properties.PNG)
+![Cloud Shell properties](./images/step2_cloud_shell_properties.PNG) |
  - Cliquer sur "create storage"
 
 Une fois le Cloud Shell démarré, vous avez le choix entre une interface bash ou Powershell. Choisissez celle qui vous plait le plus. Cela n'a pas d'incidence sur l'usage d'az cli. Ici l'interface PowerShell
