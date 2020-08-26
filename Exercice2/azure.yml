@@ -5,7 +5,6 @@
     var_vnet_name: "vnet-{{user_id}}-ex02"
     var_subnet_vm_name : "vms"
     var_nsg_vm_name: "nsg-{{user_id}}-ex02-vms-nsg"
-    var_vm_name: "vm-{{user_id}}-ex02"
     var_tags: 
         project: dojoazure
         user: us01
@@ -63,24 +62,3 @@
 
     - debug:
         var: subnet_vm
-
-    - name : Create VM Windows
-      azure_rm_virtualmachine:
-        name: "{{var_vm_name}}"
-        resource_group: "{{var_rg}}"
-        admin_username: "admincheops"
-        admin_password: "{{admin_password}}"
-        managed_disk_type: Standard_LRS
-        virtual_network_name: "{{var_vnet_name}}"
-        subnet_name: "{{var_subnet_vm_name}}"
-        os_type: "Windows"
-        image:
-            offer: "WindowsServer"
-            publisher: "MicrosoftWindowsServer"
-            sku: "2019-Datacenter"
-            version: "latest"
-        vm_size: "Standard_DS1_v2"
-      register : vm_windows
-
-    - debug:
-        var: vm_windows

@@ -263,7 +263,7 @@ Rexécuter votre template :
  - Lancer la commande suivante :  
  `New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateFile ./azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
  (où usXX = votre id user, par exemple "us01")
- - Vous devriez voir votre Azure SQL DB et Azure SQL Server créé dans le Resource Group :
+ - Vous devriez voir votre Azure SQL DB et Azure SQL Server créés dans le Resource Group :
  ![step 4 results](./images/step4_results.PNG) 
 
 Le template ARM correspondant aux ajouts effectués ci-dessous est [db_azdeploy.json](./db_azuredeploy.json)
