@@ -87,19 +87,21 @@ Lors de sa première exécution, un popup va vous signaler que le Cloud Shell n'
 Il faut donc le configurer. Pour cela, Azure va créer un Resource Group sur votre souscription avec un Storage Account qui servira à stocker le paramétrage du Cloud Shell. Si il n'y a pas de Cloud Shell existant pour votre souscription, merci de suivre les indications suivantes :
  - Cliquer sur advanced settings
  - Configurer les propriétés  
- 
+
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
 | Cloud Shell region | Région d'hébergement | Choisir `France Central`
-| Resource Group | Groupe de ressources pour votre Cloud Shell | Indiquer `cloudshell`
-| Storage account | Utilisé pour sauvegarder les propriétés du CS | Indiquer `cloudshellsaXXXX` (XXXX = chaine de caractères aléatoire)*
-| File share | File share qui sera utilisé pour sauvegarder votre espace CS dans le Storage Account | Choisir `cloudshellfs`
+| Resource Group | Groupe de ressources pour votre Cloud Shell | Choisir "Create new" et indiquer `cloudshell`
+| Storage account | Utilisé pour sauvegarder les propriétés du CS | Choisir "Create new" et indiquer `cloudshellsaXXXX` (XXXX = chaine de caractères aléatoire)*
+| File share | File share qui sera utilisé pour sauvegarder votre espace CS dans le Storage Account | Choisir "Create new" et indiquer `cloudshellfs`
 
 *un storage account doit avoir un nom unique dans une région donnée car cela réserve un alias DNS dans Azure qui doit être unique
 ![Cloud Shell properties](./images/step2_cloud_shell_properties.PNG)
+
  - Cliquer sur "create storage"
 
 Une fois le Cloud Shell démarré, vous avez le choix entre une interface bash ou Powershell. Choisissez celle qui vous plait le plus. Cela n'a pas d'incidence sur l'usage d'az cli. Ici l'interface PowerShell
+
 ![Cloud Shell powershell](./images/step2_cloud_shell_powershell.PNG)  
 
 > 👀 si vous utilisez az cli sur votre poste, bien vous authentifier sur Azure via la commande `az login` avant de suivre la suite de l'exercice
@@ -122,7 +124,9 @@ Quelques explications :
 | --kind | Paramètre pour préciser le type de Storage Account | Ici `StorageV2` qui indique la V2
 | --sku | Paramètre pour préciser le SKU du Storage Account | Ici `Standard_LRS` qui indique que le storage sera de type Standard et en LRS ([cf. SKU Storage Account](https://docs.microsoft.com/en-us/rest/api/storagerp/srp_sku_types))
 | --tags | Tags associés au Storage Account | Ici `project=dojoazure exercice=ex01 user=us01` (idem aux tags utilisés pour la WebApp de l'étape 1)
-  
+
+Après quelques secondes, votre Storage Account sera visible dans votre RG :
+
 ![Storage Account created](./images/step2_results.PNG)  
 
 > 👏 Bravo, votre Storage Account est créé via az cli !
@@ -130,19 +134,7 @@ Quelques explications :
 ## Etape 3 - Créer un Storage Account en utilisant la cmdlet Powerhsell ARM
 A l'instar de l'étape précédente, nous allons utiliser le Cloud Shell pour utiliser la cmdlet Powershell ARM. C'est un module powershell qui permet de manipuler Azure via Azure Resource Manager
 
-Sur le portail Azure, aller sur le Cloud Shell  
-
-Une fois le Cloud Shell démarré, vous avez le choix entre une interface bash ou Powershell. Choisissez l'interface Powershell
-![Cloud Shell powershell](./images/step2_cloud_shell_powershell.PNG)  
-
-> 👀 si vous utilisez le module Powershell sur votre poste, bien vous authentifier sur Azure via la commande `Login-AzAccount` avant de suivre la suite de l'exercice
-
-Configurer ensuite l'environnement de travail Azure à manipuler avec az cli :
- - Lister les souscriptions de votre abonnement : `Get-AzSubscription`
- - Choisir la souscriptions à manipuler : `Select-AzSubscription -SubscriptionId "XXXXX"` (où XXXXX = ID de votre souscription récupéré dans le résultat de la commande précédente)
-  - A tout moment, pour une aide sur une commande `Get-Help XXX`(où XXX = commande sur laquelle obtenir de l'aide)
-
-Ensuite, voici la commande à exécuter pour créer le Storage Account de cet exercice :  
+Voici la commande à exécuter pour créer le Storage Account de cet exercice :  
 `New-AzStorageAccount -Name dojoazureus01ex01ps -ResourceGroupName dojoazure-us01-ex01 -Location francecentral -EnableHttpsTrafficOnly $true -Kind StorageV2 -sku Standard_LRS  -Tags @{project="dojoazure";exercice="ex01";user="us01"}`
   
 Quelques explications :
@@ -156,17 +148,19 @@ Quelques explications :
 | -Sku | Paramètre pour préciser le SKU du Storage Account | Ici `Standard_LRS` qui indique que le storage sera de type Standard et en LRS ([cf. SKU Storage Account](https://docs.microsoft.com/en-us/rest/api/storagerp/srp_sku_types))
 | -Tags | Tags associés au Storage Account | Ici `@{project="dojoazure";exercice="ex01";user="us01"}` (idem aux tags utilisés pour la WebApp de l'étape 1)
   
+Après quelques secondes, votre Storage Account sera visible dans votre RG :
+
 ![Storage Account created PS](./images/step3_results.PNG)  
 
 > 👏 Bravo, votre Storage Account est créé via la cmdlet Powershel ARM !
 
 ## Etape 4 - Créer une base de données Azure SQL DB en utilisant un template ARM
-Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra As A Code qui permet de créer des ressources Azure en utilisant un langage descriptif s'appuyant sur les Templates ARM. Basé sur Azure Resource Manager, les templates ARM permettent de décrire l'infrastructure Azure souhaitée au format json puis lors de l'exécution, les API ARM Azure sont sollicités pour interprêter le template
+Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra As A Code qui permet de créer des ressources Azure en utilisant un langage descriptif s'appuyant sur les Templates ARM. Basé sur Azure Resource Manager, les templates ARM permettent de décrire l'infrastructure Azure souhaitée au format json puis lors de l'exécution, les API ARM Azure sont sollicitées pour interprêter le template
 
-Le fichier [azdeploy.json](./azdeploy.json) correspond à un template ARM qui permet de déployer les Etapes 1 à 3 de cet exercice.
+Le fichier [azdeploy.json](./azuredeploy.json) correspond à un template ARM qui permet de déployer les Etapes 1 à 3 de cet exercice.
 
 Vous pouvez déployer ce template en allant sur le Cloud Shell (interface powerhshell) et en exécutant la commande suivante :  
-`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateUri https://raw.githubusercontent.com/mblanquer/azure-automation/prepa_dojo/Exercice1/azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
+`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-us01-ex01 -TemplateUri https://raw.githubusercontent.com/mblanquer/azure-automation/Exercice1/azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
 (où usXX = votre id user, par exemple "us01")
   
 Quelques explications :
@@ -221,8 +215,8 @@ Quelques fonctions utilisées dans le template :
             `"defaultValue": "[utcNow()]"`  
         `}`  
   - Dans la section "variables", ajouter les deux variables suivantes qui correspondront aux noms de l'Azure SQL Server et à l'Azure SQL Database :  
-        `"dbserver_name" : "[concat(parameters('user_id'), '-db')]",`  
-        `"db_name" : "[concat(parameters('user_id'), '-db')]"`  
+        `"dbserver_name" : "[concat(parameters('user_id'), 'ex01-dbserver')]",`  
+        `"db_name" : "[concat(parameters('user_id'), '-ex01-db')]"`
   - Toujours dans la section "variables", ajouter la variable suivante qui créé un mot de passe unique pour le compte admin d'Azure SQL Server :  
         `"administratorLoginPassword" : "[concat('db', uniqueString(concat(parameters('user_id'), variables('dbserver_name'), parameters('date'))),'!')]"`
   - Dans la sections "resources", ajouter ensuite le bloc suivant pour la création de l'Azure SQL Server :  
