@@ -265,7 +265,7 @@ Quelques fonctions utilisées dans le template :
             `}`  
         `}`  
     
-    Quelques explications autour de cette section (cf. [doc ici](https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers)) : 
+    Quelques explications autour de cette section (cf. [doc ici](https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/databases)) : 
     | Paramètre | Description | Valeur |
     | --- | --- | --- |
     | type | Provider Azure utilisé - Correspond à l'API ARM utilisé par le template | Ici `"microsoft.sql/servers/databases"` qui correspond à l'API utilisé pour la création d'Azure SQL Database
