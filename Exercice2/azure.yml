@@ -1,0 +1,64 @@
+- hosts: localhost
+  vars :
+    var_rg: "dojoazure-{{user_id}}-ex02"
+    var_location: "francecentral"
+    var_vnet_name: "vnet-{{user_id}}-ex02"
+    var_subnet_vm_name : "vms"
+    var_nsg_vm_name: "nsg-{{user_id}}-ex02-vms-nsg"
+    var_tags: 
+        project: dojoazure
+        user: us01
+        exercice: ex02
+  tasks:
+    - name: Create resource group
+      azure_rm_resourcegroup:
+        name: "{{var_rg}}"
+        location: "{{var_location}}"
+      register: rg
+
+    - debug:
+        var: rg
+
+    - name : Create Vnet
+      azure_rm_virtualnetwork:
+        name: "{{var_vnet_name}}"
+        resource_group: "{{var_rg}}"
+        address_prefixes_cidr: 
+            - "10.0.0.0/23"
+        tags: "{{var_tags}}"
+      register: vnet
+
+    - debug:
+        var: vnet
+
+    - name : Create NSG for VMs subnet
+      azure_rm_securitygroup:
+        name: "{{var_nsg_vm_name}}"
+        resource_group: "{{var_rg}}"
+        purge_rules: yes
+        rules:
+            - name: AllowRdp
+              protocol: Tcp
+              source_address_prefix:
+                - 164.138.242.81
+                - 164.138.240.21 
+              destination_port_range: 3389
+              access: Allow
+              priority: 100
+              direction: Inbound
+      register: nsg_vms
+
+    - debug:
+        var: nsg_vms
+
+    - name : Create VMs subnet
+      azure_rm_subnet:
+        name: "{{var_subnet_vm_name}}"
+        resource_group: "{{var_rg}}"
+        virtual_network_name: "{{var_vnet_name}}"
+        address_prefix_cidr: "10.0.0.0/24"
+        security_group: "{{var_nsg_vm_name}}"
+      register : subnet_vm
+
+    - debug:
+        var: subnet_vm

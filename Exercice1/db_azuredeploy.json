@@ -1,0 +1,131 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "user_id": {
+            "type": "String"
+        },
+        "date": {
+            "type": "String",
+            "defaultValue": "[utcNow()]"
+        }
+    },
+    "variables": {
+        "webapp_name": "[concat('webapp-', parameters('user_id'), '-ex01')]",
+        "asp_name": "[concat(variables('webapp_name'), '-asp')]",
+        "ai_name": "[variables('webapp_name')]",
+        "sa_name": "[concat('dojoazure', parameters('user_id'), 'ex01')]",
+        "saps_name": "[concat('dojoazure', parameters('user_id'), 'ex01ps')]",
+        "tags": {"project":"dojoazure","user":"us01","exercice":"ex01"},
+        "dbserver_name" : "[concat(parameters('user_id'), 'ex01-dbserver')]",
+        "db_name" : "[concat(parameters('user_id'), '-ex01-db')]",
+        "administratorLoginPassword" : "[concat('db', uniqueString(concat(parameters('user_id'), variables('dbserver_name'), parameters('date'))),'!')]"
+    },
+    "resources": [
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[variables('ai_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[variables('tags')]",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('sa_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[variables('tags')]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "supportsHttpsTrafficOnly": true
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('saps_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[variables('tags')]",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "supportsHttpsTrafficOnly": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[variables('asp_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[variables('tags')]",
+            "sku": {
+                "name": "F1",
+                "tier": "Free",
+                "size": "F1",
+                "family": "F",
+                "capacity": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[variables('webapp_name')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('asp_name'))]"
+            ],
+            "tags": "[variables('tags')]",
+            "kind": "app",
+            "properties": {
+            }
+        },
+        {
+            "type": "microsoft.sql/servers",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[variables('dbserver_name')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[variables('tags')]",
+            "properties": {
+                "administratorLogin": "adminDB",
+                "administratorLoginPassword": "[variables('administratorLoginPassword')]"
+            }
+        },
+        {
+            "type": "microsoft.sql/servers/databases",
+            "apiVersion": "2019-06-01-preview",
+            "name": "[concat(variables('dbserver_name'), '/', variables('db_name'))]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": ["[variables('dbserver_name')]"],
+            "tags": "[variables('tags')]",
+            "sku": {
+                "name": "GP_S_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 1
+            },
+            "kind": "v12.0,user,vcore,serverless",
+            "properties": {
+                "maxSizeBytes": 1073741824,
+                "autoPauseDelay": 60,
+                "minCapacity": 0.5
+            }
+        }
+    ],
+    "outputs": {
+        "administratorLoginPassword" : {
+            "type": "string",
+            "value": "[variables('administratorLoginPassword')]"
+        }
+    }
+}
