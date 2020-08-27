@@ -157,7 +157,7 @@ Après quelques secondes, votre Storage Account sera visible dans votre RG :
 > 👏 Bravo, votre Storage Account est créé via la cmdlet Powershel ARM !
 
 ## Etape 4 - Créer une base de données Azure SQL DB en utilisant un template ARM
-Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra As A Code qui permet de créer des ressources Azure en utilisant un langage descriptif s'appuyant sur les Templates ARM. Basé sur Azure Resource Manager, les templates ARM permettent de décrire l'infrastructure Azure souhaitée au format json puis lors de l'exécution, les API ARM Azure sont sollicitées pour interprêter le template
+Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra As Code qui permet de créer des ressources Azure en utilisant un langage descriptif s'appuyant sur les Templates ARM. Basé sur Azure Resource Manager, les templates ARM permettent de décrire l'infrastructure Azure souhaitée au format json puis lors de l'exécution, les API ARM Azure sont sollicitées pour interprêter le template
 
 Le fichier [azdeploy.json](./azuredeploy.json) correspond à un template ARM qui permet de déployer les Etapes 1 à 3 de cet exercice.
 
