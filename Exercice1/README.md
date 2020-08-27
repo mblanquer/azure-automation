@@ -162,7 +162,7 @@ Dans cette nouvelle étape, nous allons cette fois utiliser une méthode d'Infra
 Le fichier [azdeploy.json](./azuredeploy.json) correspond à un template ARM qui permet de déployer les Etapes 1 à 3 de cet exercice.
 
 Vous pouvez déployer ce template en allant sur le Cloud Shell (interface powerhshell) et en exécutant la commande suivante :  
-`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-usXX-ex01 -TemplateUri https://raw.githubusercontent.com/mblanquer/azure-automation/Exercice1/azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
+`New-AzResourceGroupDeployment -Name deployARMTemplate -ResourceGroupName dojoazure-usXX-ex01 -TemplateUri https://raw.githubusercontent.com/mblanquer/azure-automation/master/Exercice1/azuredeploy.json -TemplateParameterObject @{"user_id"="usXX"}`  
 (où usXX = votre id user, par exemple "us01")
   
 Quelques explications :
