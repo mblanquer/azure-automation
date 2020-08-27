@@ -26,13 +26,13 @@ Lors de sa première exécution, un popup va vous signaler que le Cloud Shell n'
 Il faut donc le configurer. Pour cela, Azure va créer un Resource Group sur votre souscription avec un Storage Account qui servira à stocker le paramétrage du Cloud Shell. Si il n'y a pas de Cloud Shell existant pour votre souscription, merci de suivre les indications suivantes :
  - Cliquer sur advanced settings
  - Configurer les propriétés  
+
 | Propriétés | Description | Valeur |
 | --- | --- | --- |
 | Cloud Shell region | Région d'hébergement | Choisir `France Central`
 | Resource Group | Groupe de ressources pour votre Cloud Shell | Indiquer `cloudshell`
 | Storage account | Utilisé pour sauvegarder les propriétés du CS | Indiquer `cloudshellsaXXXX` (XXXX = chaine de caractères aléatoire)*
 | File share | File share qui sera utilisé pour sauvegarder votre espace CS dans le Storage Account | Choisir `cloudshellfs`
-
 *un storage account doit avoir un nom unique dans une région donnée car cela réserve un alias DNS dans Azure qui doit être unique
 ![Cloud Shell properties](../Exercice1/images/step2_cloud_shell_properties.PNG)
  - Cliquer sur "create storage"
